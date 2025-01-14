@@ -1,7 +1,7 @@
 import java.io.*;
 
 class SelfReplication {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         int currentIteration = 0;
         if (args.length == 1) {
             currentIteration = Integer.parseInt(args[0]);
@@ -9,11 +9,12 @@ class SelfReplication {
                 System.exit(0);
             }
         }
-        String self = String.format("public class SelfReplication%d{public static void main(String[] args){System.out.println(\"Hello World!\");}}", currentIteration);
-        String filename = String.format("%s\\SelfReplication%d", System.getProperty("user.dir"), currentIteration);
+        String self = String.format("public class SelfReplication%d{ public static void main(String[] args){System.out.println(\"Hello \" + args[0]);}}", currentIteration);
+        String filename = String.format("SelfReplication%d", currentIteration);
         write(filename, self);
-        Runtime.getRuntime().exec(new String[]{ "javac", filename + ".java" });
-        Process proc = Runtime.getRuntime().exec(new String[]{ "java", "-cp", ".", System.getProperty("user.dir") + "\\" + filename });;
+        Runtime.getRuntime().exec(new String[]{ "javac", System.getProperty("user.dir") + "/" + filename + ".java" });
+        Thread.sleep(1000);
+        Process proc = Runtime.getRuntime().exec(new String[]{ "java", "-cp", System.getProperty("user.dir") + "/", filename, String.valueOf(currentIteration + 1) });;
 
         BufferedReader stdInput = new BufferedReader(new
                 InputStreamReader(proc.getInputStream()));
