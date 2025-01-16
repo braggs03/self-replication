@@ -23,7 +23,7 @@ class SelfReplication%d {
         }
         String self = %c%c%c%c%s%c%c%c;
         self = String.format(self, currentIteration + 1, 34, 34, 34, 10, self, 34, 34, 34, 37, 100);
-        String filename = String.format("SelfReplication%s%s", currentIteration + 1);
+        String filename = String.format("SelfReplication%c%c", currentIteration + 1);
         write(filename, self);
         Process compile = Runtime.getRuntime().exec(new String[]{ "javac", System.getProperty("user.dir") + "/" + filename + ".java" });
         compile.waitFor();
